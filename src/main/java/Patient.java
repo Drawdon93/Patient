@@ -8,8 +8,7 @@ import java.math.BigInteger;
 public class Patient {
     private String name;
     private String surname;
-   // private BigInteger pesel;
-    private String pesel;
+    private BigInteger pesel;
 
 }
 //Zadanie Rejestracja

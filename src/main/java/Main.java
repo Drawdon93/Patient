@@ -1,50 +1,57 @@
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     private static final String FILE_NAME = "src/main/resources/Excel.xlsx";
 
     public static void main(String[] args) {
         List<Patient> patientList= new ArrayList<>();
-        patientList.add(new Patient("Patryk","Trybuch",("355555558")));
-        patientList.add(new Patient("Jan","Kowalski",("314044210")));
-        patientList.add(new Patient("Ania","Kuk",("910640277")));
+        patientList.add(new Patient("Patryk","Trybuch",new BigInteger("99087666341")));
+        patientList.add(new Patient("Jan","Kowalski",new BigInteger("314044210")));
+        patientList.add(new Patient("Ania","Kuk",new BigInteger("910640277")));
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Patient");
-       creatingDaneExel(sheet,patientList);
-        try {
-            FileOutputStream outputStream = new FileOutputStream(FILE_NAME);
-            workbook.write(outputStream);
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        ApachePOIExcelWrite apachePOIExcelWrite = new ApachePOIExcelWrite();
+
+        apachePOIExcelWrite.createExcel(patientList);
+
+        PatientService patientService = new PatientService(patientList);
+
+        System.out.println(patientService.isRegistered(new BigInteger("99087666341"))); // true
+        System.out.println(patientService.isRegistered(new BigInteger("123"))); // false        System.out.println(patientService.isRegistered("Asd", "Asd")); //false
+        System.out.println(patientService.isRegistered("Jan", "Kowalski")); //true        System.out.println("-------------------------------");
+        Patient patient1 = new Patient("Test", "Kowalski", new BigInteger("82345678910"));
+        System.out.println(patientService.isRegistered("Test", "Kowalski")); //false
+        patientList.add(patient1);
+        apachePOIExcelWrite.createExcel(patientList);
+        System.out.println(patientService.isRegistered("Test", "Kowalski")); //false
+        System.out.println("///////////////");
+
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Witam na recepcji");
+            String firstcase = scan.nextLine();
+
+            
+        switch(new int[firstcase]){
+            case 1:
+                System.out.println("jakieś_instrukcje_1");
+                break;
+            case 2:
+                System.out.println("jakieś_instrukcje_2");
+                break;
+                case 3:
+                System.out.println("jakieś_instrukcje_3");
+                break;
+
+            default:
+                return;
         }
-        System.out.println("Finish");
-    }
-
-    private static void creatingDaneExel(XSSFSheet sheet, List<Patient> patientList) {
-        int rowNum = 0;
-        Row row = sheet.createRow(rowNum++);
-        row.createCell(0).setCellValue("Imię");
-        row.createCell(1).setCellValue("Nazwisko");
-        row.createCell(2).setCellValue("PESEL");
-        for (Patient employee : patientList) {
-            row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(employee.getName());
-            row.createCell(1).setCellValue(employee.getSurname());
-            row.createCell(2).setCellValue(employee.getPesel().toString());
-        }
-    }
-
-
+            System.out.println("Witaj " );
 
 
     }
+
+
+    }
+
